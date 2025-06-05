@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- 加载状态样式 -->
+<style>
+.chart-container {
+    position: relative;
+    min-height: 300px;
+}
+
+.chart-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.chart-loading.active {
+    display: block;
+}
+
+.stat-card {
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    opacity: 0.3;
+}
+</style>
+
+<div class="row">
+    <!-- 当天访客统计卡片 -->
+    <div class="col-md-4 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <i class="bi bi-calendar-day me-1"></i>今日访客
+                        </h6>
+                        <h2 class="card-title mb-0" data-value="{{ stats.today_count }}">
+                            <i class="bi bi-people me-1"></i>0
+                        </h2>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="bi bi-person-lines-fill"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 本周访客统计卡片 -->
+    <div class="col-md-4 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <i class="bi bi-calendar-week me-1"></i>本周访客
+                        </h6>
+                        <h2 class="card-title mb-0" data-value="{{ stats.week_stats|sum(attribute='count') }}">
+                            <i class="bi bi-graph-up-arrow me-1"></i>0
+                        </h2>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="bi bi-bar-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 本月访客统计卡片 -->
+    <div class="col-md-4 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <i class="bi bi-calendar-month me-1"></i>本月访客
+                        </h6>
+                        <h2 class="card-title mb-0" data-value="{{ stats.month_stats|sum(attribute='count') }}">
+                            <i class="bi bi-graph-up me-1"></i>0
+                        </h2>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="bi bi-bar-chart-steps"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 图表区域 -->
+<div class="row">
+    <!-- 周访客趋势 -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0 d-flex align-items-center">
+                    <span class="badge bg-primary rounded-pill me-2">
+                        <i class="bi bi-bar-chart-fill"></i>
+                    </span>
+                    本周访客趋势
+                    <small class="text-muted ms-auto">
+                        <i class="bi bi-info-circle me-1"></i>周一至今
+                    </small>
+                </h5>
+            </div>
+            <div class="card-body chart-container">
+                <div class="chart-loading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">加载中...</span>
+                    </div>
+                </div>
+                <canvas id="weekChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 月访客分布 -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0 d-flex align-items-center">
+                    <span class="badge bg-success rounded-pill me-2">
+                        <i class="bi bi-graph-up"></i>
+                    </span>
+                    本月访客趋势
+                    <small class="text-muted ms-auto">
+                        <i class="bi bi-info-circle me-1"></i>1日至今
+                    </small>
+                </h5>
+            </div>
+            <div class="card-body chart-container">
+                <div class="chart-loading">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">加载中...</span>
+                    </div>
+                </div>
+                <canvas id="monthChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// 全局图表配置
+Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+Chart.defaults.color = '#666';
+Chart.defaults.responsive = true;
+Chart.defaults.maintainAspectRatio = false;
+
+// 准备数据
+const weekData = {{ stats.week_stats|tojson|safe }};
+const monthData = {{ stats.month_stats|tojson|safe }};
+
+function showLoading(chartId) {
+    const container = document.querySelector(`#${chartId}`).parentElement;
+    const loading = container.querySelector('.chart-loading');
+    if (loading) loading.classList.add('active');
+}
+
+function hideLoading(chartId) {
+    const container = document.querySelector(`#${chartId}`).parentElement;
+    const loading = container.querySelector('.chart-loading');
+    if (loading) loading.classList.remove('active');
+}
+
+// 初始化图表
+async function initCharts() {
+    showLoading('weekChart');
+    showLoading('monthChart');
+
+    // 周数据图表
+    new Chart(document.getElementById('weekChart'), {
+        type: 'bar',
+        data: {
+            labels: weekData.map(item => {
+                const [year, month, day] = item.date.split('-');
+                const date = new Date(year, month - 1, day);
+                return `${date.toLocaleDateString('zh-CN', { weekday: 'short' })}(${day}日)`;
+            }),
+            datasets: [{
+                label: '本周访客趋势',
+                data: weekData.map(item => item.count),
+                backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                borderRadius: 6,
+                maxBarThickness: 40,
+                borderColor: 'rgba(52, 152, 219, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            animation: {
+                onComplete: () => hideLoading('weekChart')
+            }
+        }
+    });
+
+    // 月数据图表
+    new Chart(document.getElementById('monthChart'), {
+        type: 'line',
+        data: {
+            labels: monthData.map(item => {
+                const [year, month, day] = item.date.split('-');
+                return `${month}月${day}日`;
+            }),
+            datasets: [{
+                label: '本月访客趋势',
+                data: monthData.map(item => item.count),
+                borderColor: '#2ecc71',
+                backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#ffffff',
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            animation: {
+                onComplete: () => hideLoading('monthChart')
+            }
+        }
+    });
+}
+
+// 数字增长动画函数
+function animateNumber(element, target) {
+    const duration = 1000;
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = start;
+    
+    const animate = () => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = Math.round(target);
+        } else {
+            element.textContent = Math.round(current);
+            requestAnimationFrame(animate);
+        }
+    };
+    
+    animate();
+}
+
+// 页面加载时启动动画和初始化图表
+document.addEventListener('DOMContentLoaded', function() {
+    // 启动数字增长动画
+    document.querySelectorAll('.card-title[data-value]').forEach(element => {
+        const target = parseInt(element.getAttribute('data-value'));
+        animateNumber(element, target);
+    });
+
+    // 初始化图表
+    initCharts();
+});
+</script>
+{% endblock %}
