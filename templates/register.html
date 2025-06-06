@@ -6,23 +6,23 @@
         <h2><i class="bi bi-person-plus me-2"></i>访客登记</h2>
     </div>
     <div class="card-body">
-        <form method="post" class="needs-validation" novalidate>
-            <div class="row g-4">                <div class="col-md-6">
+        <form method="post" class="needs-validation" novalidate>            <div class="row g-4">                
+                <div class="col-md-6">
                     <label for="name" class="form-label">
-                        <i class="bi bi-person me-1"></i>姓名
+                        <i class="bi bi-person-badge me-1"></i>姓名
                     </label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                        <span class="input-group-text"><i class="bi bi-person-badge-fill"></i></span>
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="invalid-feedback">请输入姓名</div>
                 </div>
                 <div class="col-md-6">
                     <label for="id_number" class="form-label">
-                        <i class="bi bi-credit-card me-1"></i>身份证号
+                        <i class="bi bi-person-vcard me-1"></i>身份证号
                     </label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-credit-card-2-front"></i></span>
+                        <span class="input-group-text"><i class="bi bi-person-vcard-fill"></i></span>
                         <input type="text" class="form-control" id="id_number" name="id_number" required 
                                pattern="[0-9Xx]{18}" title="请输入18位身份证号">
                     </div>
@@ -30,10 +30,10 @@
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">
-                        <i class="bi bi-telephone me-1"></i>电话号码
+                        <i class="bi bi-telephone-outbound me-1"></i>电话号码
                     </label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                        <span class="input-group-text"><i class="bi bi-telephone-outbound-fill"></i></span>
                         <input type="tel" class="form-control" id="phone" name="phone" required
                                pattern="[0-9]{11}" title="请输入11位手机号">
                     </div>
@@ -41,30 +41,29 @@
                 </div>
                 <div class="col-md-6">
                     <label for="purpose" class="form-label">
-                        <i class="bi bi-clipboard me-1"></i>来访目的
+                        <i class="bi bi-journals me-1"></i>来访目的
                     </label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-clipboard-check"></i></span>
+                        <span class="input-group-text"><i class="bi bi-journal-text"></i></span>
                         <textarea class="form-control" id="purpose" name="purpose" rows="1" required></textarea>
                     </div>
                     <div class="invalid-feedback">请输入来访目的</div>
-                </div>
-                <div class="col-md-6">
+                </div>                <div class="col-md-6">
                     <label for="start_time" class="form-label">
-                        <i class="bi bi-clock me-1"></i>开始时间
+                        <i class="bi bi-calendar-plus me-1"></i>开始时间
                     </label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                        <span class="input-group-text"><i class="bi bi-calendar-plus-fill"></i></span>
                         <input type="datetime-local" class="form-control" id="start_time" name="start_time" required>
                     </div>
                     <div class="invalid-feedback">请选择开始时间</div>
                 </div>
                 <div class="col-md-6">
                     <label for="end_time" class="form-label">
-                        <i class="bi bi-clock-history me-1"></i>结束时间
+                        <i class="bi bi-calendar-minus me-1"></i>结束时间
                     </label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-calendar-check"></i></span>
+                        <span class="input-group-text"><i class="bi bi-calendar-minus-fill"></i></span>
                         <input type="datetime-local" class="form-control" id="end_time" name="end_time" required>
                     </div>
                     <div class="invalid-feedback">请选择结束时间</div>

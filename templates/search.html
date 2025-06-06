@@ -9,17 +9,17 @@
         </span>
     </div>    <div class="card-body">
         <form method="get" class="mb-4">
-            <div class="row g-3">
-                <div class="col-md-4">
+            <div class="row g-3">                <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-person"></i></span>                        <input type="text" class="form-control" name="search_term" 
+                        <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+                        <input type="text" class="form-control" name="search_term" 
                                placeholder="姓名/身份证号/电话号码"
                                value="{{ request.args.get('search_term', '') }}">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                        <span class="input-group-text"><i class="bi bi-calendar-check"></i></span>
                         <input type="date" class="form-control" name="start_date" 
                                value="{{ request.args.get('start_date', '') }}"
                                placeholder="开始日期">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                        <span class="input-group-text"><i class="bi bi-calendar-x"></i></span>
                         <input type="date" class="form-control" name="end_date" 
                                value="{{ request.args.get('end_date', '') }}"
                                placeholder="结束日期">
@@ -35,24 +35,23 @@
                 </div>
                 <div class="col-md-2">
                     <button class="btn btn-primary w-100" type="submit">
-                        <i class="bi bi-search me-2"></i>搜索
+                        <i class="bi bi-search-heart me-2"></i>搜索
                     </button>
                 </div>
             </div>
         </form>
 
         {% if visitors %}
-        <div class="table-responsive">
-            <table class="table table-hover">
+        <div class="table-responsive">            <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th><i class="bi bi-clock me-2"></i>登记时间</th>
-                        <th><i class="bi bi-person me-2"></i>姓名</th>
-                        <th><i class="bi bi-card-text me-2"></i>身份证号</th>
-                        <th><i class="bi bi-telephone me-2"></i>电话</th>
-                        <th><i class="bi bi-chat-dots me-2"></i>来访目的</th>
-                        <th><i class="bi bi-calendar-check me-2"></i>开始时间</th>
-                        <th><i class="bi bi-calendar-x me-2"></i>结束时间</th>
+                        <th><i class="bi bi-clock-history me-2"></i>登记时间</th>
+                        <th><i class="bi bi-person-badge me-2"></i>姓名</th>
+                        <th><i class="bi bi-person-vcard me-2"></i>身份证号</th>
+                        <th><i class="bi bi-telephone-outbound me-2"></i>电话</th>
+                        <th><i class="bi bi-journals me-2"></i>来访目的</th>
+                        <th><i class="bi bi-calendar-plus me-2"></i>开始时间</th>
+                        <th><i class="bi bi-calendar-minus me-2"></i>结束时间</th>
                     </tr>
                 </thead>
                 <tbody>                    {% for visitor in visitors %}
