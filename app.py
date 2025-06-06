@@ -66,34 +66,32 @@ def register():
     
     return render_template('register.html')
 
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search')
 def search():
     visitors = []
     db = get_db()
     
-    if request.method == 'POST':
-        search_term = request.form.get('search_term', '')
-        start_date = request.form.get('start_date', '')
-        end_date = request.form.get('end_date', '')
+    # 获取搜索参数
+    search_term = request.args.get('search_term', '').strip()
+    start_date = request.args.get('start_date', '').strip()
+    end_date = request.args.get('end_date', '').strip()
+    
+    # 构建查询
+    query = '''SELECT * FROM visitors WHERE 1=1'''
+    params = []
+    
+    if search_term:
+        query += ''' AND (name LIKE ? OR id_number LIKE ? OR phone LIKE ?)'''
+        search_pattern = f'%{search_term}%'
+        params.extend([search_pattern] * 3)
         
-        query = '''SELECT * FROM visitors WHERE 1=1'''
-        params = []
+    if start_date:
+        query += ''' AND date(visit_time) >= date(?)'''
+        params.append(start_date)
         
-        if search_term:
-            query += ''' AND (name LIKE ? OR id_number LIKE ? OR phone LIKE ?)'''
-            params.extend(['%' + search_term + '%'] * 3)
-            
-        if start_date:
-            query += ''' AND date(start_time) >= date(?)'''
-            params.append(start_date)
-            
-        if end_date:
-            query += ''' AND date(end_time) <= date(?)'''
-            params.append(end_date)
-    else:
-        # 如果是GET请求，显示所有访客记录
-        query = '''SELECT * FROM visitors WHERE 1=1'''
-        params = []
+    if end_date:
+        query += ''' AND date(visit_time) <= date(?)'''
+        params.append(end_date)
     
     query += ''' ORDER BY visit_time DESC'''
     visitors = db.execute(query, params).fetchall()

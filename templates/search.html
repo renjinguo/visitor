@@ -12,17 +12,16 @@
             <div class="row g-3">
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-person"></i></span>
-                        <input type="text" class="form-control" name="search_term" 
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>                        <input type="text" class="form-control" name="search_term" 
                                placeholder="姓名/身份证号/电话号码"
-                               value="{{ request.form.get('search_term', '') }}">
+                               value="{{ request.args.get('search_term', '') }}">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
                         <input type="date" class="form-control" name="start_date" 
-                               value="{{ request.form.get('start_date', '') }}"
+                               value="{{ request.args.get('start_date', '') }}"
                                placeholder="开始日期">
                     </div>
                 </div>
@@ -30,7 +29,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
                         <input type="date" class="form-control" name="end_date" 
-                               value="{{ request.form.get('end_date', '') }}"
+                               value="{{ request.args.get('end_date', '') }}"
                                placeholder="结束日期">
                     </div>
                 </div>
