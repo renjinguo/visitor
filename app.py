@@ -4,7 +4,7 @@ import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # 用于flash消息
-DATABASE = 'data/visitor.db'  # 将数据库文件放在data目录下
+DATABASE = 'data\\visitor.db'  # 将数据库文件放在data目录下
 
 @app.template_filter('format_datetime')
 def format_datetime(value):
