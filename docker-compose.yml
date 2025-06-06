@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  visitor-app:
+    build: .
+    container_name: visitor-management
+    ports:
+      - "6000:6000"
+    volumes:
+      - visitor_data:/app/data
+    restart: unless-stopped
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+
+volumes:
+  visitor_data:

@@ -1,0 +1,20 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env/
+
+# 数据库文件（将在容器内重新创建）
+visitor.db
+
+# IDE
+.vscode/
+.idea/
