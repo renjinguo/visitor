@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.number-line {
+    position: relative;
+    height: 100px;
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.line {
+    position: absolute;
+    width: 90%;
+    height: 3px;
+    background-color: #333;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.zero-point {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #3498db;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.number-point {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.5s ease;
+}
+
+.positive {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.negative {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+#reset {
+    background-color: #95a5a6;
+}
+
+#reset:hover {
+    background-color: #7f8c8d;
+}
+
+.explanation {
+    background-color: #ecf0f1;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.explanation p {
+    margin: 10px 0;
+}
+
+.explanation ul {
+    margin: 10px 0 10px 20px;
+}
